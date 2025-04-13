@@ -15,7 +15,6 @@ import {
 } from "recharts";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import Papa from "papaparse"; // Import papaparse for CSV functionality
 
 const Reports = () => {
   const [foodSavedData, setFoodSavedData] = useState([]);
@@ -81,20 +80,7 @@ const Reports = () => {
     doc.save("ZeroWaste_Report.pdf");
   };
 
-  // CSV Export Functionality
-  const exportCSV = () => {
-    const csvData = [
-      ["Top Donor/NGO", "Total Donations"],
-      ...topDonors.map((donor) => [donor.name, donor.total]),
-    ];
-    const csv = Papa.unparse(csvData);
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "ZeroWaste_Report.csv";
-    link.click();
-  };
-
+  
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -106,7 +92,7 @@ const Reports = () => {
           <Button variant="outline" onClick={exportPDF}>
             <Download className="w-4 h-4 mr-2" /> Export PDF
           </Button>
-          <Button variant="outline" onClick={exportCSV}>
+          <Button variant="outline" disabled>
             <FileText className="w-4 h-4 mr-2" /> Export CSV
           </Button>
         </div>
@@ -180,4 +166,3 @@ const Reports = () => {
 };
 
 export default Reports;
-
