@@ -1,0 +1,52 @@
+/* src/components/BubbleBackground.css */
+.bubble-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    background-color: #fdfaf6;
+  }
+  
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(76, 175, 80, 0.3);
+    opacity: 0.7;
+    animation: drift 20s linear infinite;
+  }
+  
+  /* Vary properties to make motion natural */
+  .bubble:nth-child(1)  { width: 40px; height: 40px; left: 10%; top: 90%; animation-duration: 18s; }
+  .bubble:nth-child(2)  { width: 25px; height: 25px; left: 20%; top: 100%; animation-duration: 22s; }
+  .bubble:nth-child(3)  { width: 35px; height: 35px; left: 30%; top: 95%; animation-duration: 20s; }
+  .bubble:nth-child(4)  { width: 50px; height: 50px; left: 40%; top: 105%; animation-duration: 19s; }
+  .bubble:nth-child(5)  { width: 30px; height: 30px; left: 50%; top: 100%; animation-duration: 25s; }
+  .bubble:nth-child(6)  { width: 45px; height: 45px; left: 60%; top: 110%; animation-duration: 23s; }
+  .bubble:nth-child(7)  { width: 20px; height: 20px; left: 70%; top: 95%; animation-duration: 17s; }
+  .bubble:nth-child(8)  { width: 38px; height: 38px; left: 80%; top: 100%; animation-duration: 21s; }
+  .bubble:nth-child(9)  { width: 32px; height: 32px; left: 90%; top: 98%; animation-duration: 20s; }
+  .bubble:nth-child(10) { width: 28px; height: 28px; left: 95%; top: 105%; animation-duration: 24s; }
+  .bubble:nth-child(11) { width: 34px; height: 34px; left: 15%; top: 92%; animation-duration: 26s; }
+  .bubble:nth-child(12) { width: 29px; height: 29px; left: 25%; top: 97%; animation-duration: 19s; }
+  .bubble:nth-child(13) { width: 42px; height: 42px; left: 55%; top: 99%; animation-duration: 22s; }
+  .bubble:nth-child(14) { width: 36px; height: 36px; left: 65%; top: 101%; animation-duration: 23s; }
+  .bubble:nth-child(15) { width: 33px; height: 33px; left: 85%; top: 104%; animation-duration: 20s; }
+  
+  @keyframes drift {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translate(30px, -300px) rotate(45deg);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(-30px, -600px) rotate(90deg);
+      opacity: 0;
+    }
+  }
+  
