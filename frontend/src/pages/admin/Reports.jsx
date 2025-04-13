@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "../../components/ui/table";
+import { CalendarDays, FileText, Download } from "lucide-react";
 import { Badge } from "../../components/ui/badge";
 import {
   AreaChart,
@@ -12,9 +13,9 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { CalendarDays, FileText, Download } from "lucide-react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import Papa from "papaparse"; // Import papaparse for CSV functionality
 
 const Reports = () => {
   const [foodSavedData, setFoodSavedData] = useState([]);
@@ -26,7 +27,7 @@ const Reports = () => {
   useEffect(() => {
     fetchStats();
     fetchTopDonors();
-    fetchWeeklyFoodSaved();
+    loadDummyFoodSavedData();
   }, []);
 
   const fetchStats = async () => {
@@ -49,16 +50,18 @@ const Reports = () => {
     }
   };
 
-  const fetchWeeklyFoodSaved = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/admin/reports/weekly-food");
-      const data = await res.json();
-      setFoodSavedData(data);
-    } catch (err) {
-      setError("Failed to load food saved data.");
-    } finally {
-      setLoading(false);
-    }
+  const loadDummyFoodSavedData = () => {
+    const dummy = [
+      { date: "Mon", amount: 120 },
+      { date: "Tue", amount: 300 },
+      { date: "Wed", amount: 250 },
+      { date: "Thu", amount: 400 },
+      { date: "Fri", amount: 200 },
+      { date: "Sat", amount: 500 },
+      { date: "Sun", amount: 350 },
+    ];
+    setFoodSavedData(dummy);
+    setLoading(false);
   };
 
   const exportPDF = () => {
@@ -78,6 +81,20 @@ const Reports = () => {
     doc.save("ZeroWaste_Report.pdf");
   };
 
+  // CSV Export Functionality
+  const exportCSV = () => {
+    const csvData = [
+      ["Top Donor/NGO", "Total Donations"],
+      ...topDonors.map((donor) => [donor.name, donor.total]),
+    ];
+    const csv = Papa.unparse(csvData);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "ZeroWaste_Report.csv";
+    link.click();
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -89,7 +106,7 @@ const Reports = () => {
           <Button variant="outline" onClick={exportPDF}>
             <Download className="w-4 h-4 mr-2" /> Export PDF
           </Button>
-          <Button variant="outline" disabled>
+          <Button variant="outline" onClick={exportCSV}>
             <FileText className="w-4 h-4 mr-2" /> Export CSV
           </Button>
         </div>
@@ -163,3 +180,4 @@ const Reports = () => {
 };
 
 export default Reports;
+
