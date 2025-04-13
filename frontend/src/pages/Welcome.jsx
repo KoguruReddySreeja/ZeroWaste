@@ -7,7 +7,7 @@ const Welcome = () => {
     <div className="bg-[#fdfaf6] text-[#333] font-sans">
       {/* Navbar */}
       <nav className="flex justify-between items-center p-6 bg-white shadow-md sticky top-0 z-50">
-        <div className="text-2xl font-bold text-[#4CAF50]">ZeroWaste</div>
+        <div className="text-3xl font-bold text-[#4CAF50]">ZeroWaste</div>
         <div className="space-x-4">
           <Link
             to="/login"
@@ -24,11 +24,23 @@ const Welcome = () => {
         </div>
       </nav>
 
-      {/* Hero Section with Local Background Image */}
+      {/* Scrolling Quote */}
+      <div className="w-full bg-gray-200 py-2 overflow-hidden border-b border-gray-200">
+        <div className="w-full pl-4">
+          <div className="inline-block animate-marquee text-black font-medium text-sm md:text-base whitespace-nowrap">
+            “Every meal donated is a moment of hope. ZeroWaste bridges generosity with need—empowering donors, uplifting lives, and eliminating food waste.”
+          </div>
+        </div>
+      </div>
+
+      {/* Hero Section with Fixed Background Image */}
       <section
-        className="relative bg-cover bg-center text-white px-10 py-32"
+        className="relative bg-cover bg-center bg-no-repeat text-white px-10 py-32"
         style={{
           backgroundImage: `url(${bgImage})`,
+          backgroundAttachment: "fixed",  
+          backgroundPosition: "center",
+          backgroundSize: "cover",
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
@@ -40,27 +52,54 @@ const Welcome = () => {
             ZeroWaste is an AI-powered platform that connects food donors with nearby NGOs, shelters, and volunteers. Powered by smart geolocation, we rescue surplus food and deliver it to those who need it most.
           </p>
           <div className="space-x-4">
-            <Link to="/signup" className="px-6 py-3 bg-[#4CAF50] text-white rounded-xl hover:bg-[#43a047] transition">
+            <Link
+              to="/signup"
+              className="px-6 py-3 bg-[#4CAF50] text-white rounded-xl hover:bg-[#43a047] transition"
+            >
               Become a Donor
             </Link>
-            <Link to="/signup" className="px-6 py-3 border border-white text-white rounded-xl hover:bg-white hover:text-[#4CAF50] transition">
+            <Link
+              to="/signup"
+              className="px-6 py-3 border border-white text-white rounded-xl hover:bg-white hover:text-[#4CAF50] transition"
+            >
               Need Food? Register Now
             </Link>
           </div>
         </div>
       </section>
 
+      <style>
+        {`
+          .animate-marquee {
+            animation: marquee 20s linear infinite;
+          }
+          @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+          }
+          /* Zoom effect for impact stats with shadow */
+          .stat-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+          }
+
+          .stat-card:hover {
+            transform: scale(1.15); /* More zoom */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Shadow effect */
+          }
+        `}
+      </style>
+
       {/* Impact Stats */}
       <section className="py-16 bg-[#e0e0e0] text-center">
         <h2 className="text-3xl font-extrabold text-[#4CAF50] mb-10">Our Impact</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 px-6 md:px-20">
-          {[
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 px-6 md:px-20 font-bold">
+          {[ 
             { icon: "🍱", label: "Meals Rescued", value: "18,420" },
             { icon: "🧍‍♀️", label: "People Fed", value: "12,370" },
             { icon: "🌍", label: "Food Waste Prevented (Kg)", value: "6,920" },
             { icon: "🏥", label: "Partner NGOs", value: "210+" }
           ].map((item, idx) => (
-            <div key={idx} className="bg-white p-6 rounded-xl shadow-md">
+            <div key={idx} className="stat-card bg-white p-6 rounded-xl shadow-md">
               <div className="text-4xl mb-2">{item.icon}</div>
               <h3 className="text-xl font-semibold text-[#4CAF50]">{item.value}</h3>
               <p className="text-[#555]">{item.label}</p>
@@ -142,5 +181,4 @@ const Welcome = () => {
     </div>
   );
 };
-
 export default Welcome;
