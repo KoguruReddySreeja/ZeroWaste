@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import LogoutButton from '../../components/LogoutButton';
-import axios from 'axios';
 
 const SettingsPage = () => {
   const [userData, setUserData] = useState({
@@ -17,28 +16,23 @@ const SettingsPage = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Fetch the logged-in user's data
+  // Dummy fetch on mount
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('authToken');
-        const response = await axios.get('http://localhost:5000/api/user/profile', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUserData(response.data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-    fetchUserData();
+    setUserData({
+      name: 'John Doe',
+      email: 'john@example.com',
+      ngo: 'Helping Hands',
+      phone: '1234567890',
+      notifications: {
+        email: true,
+        sms: false,
+        push: true,
+      },
+    });
   }, []);
 
-  // Handle changes for profile inputs
   const handleProfileChange = (e, setter) => setter(e.target.value);
 
-  // Handle notification preference changes
   const handleNotificationChange = (e) => {
     setUserData({
       ...userData,
@@ -49,56 +43,23 @@ const SettingsPage = () => {
     });
   };
 
-  // Handle password change
   const handlePasswordChange = (e, setter) => setter(e.target.value);
 
-  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     window.location.href = '/login';
   };
 
-  // Update profile
-  const handleUpdateProfile = async () => {
-    try {
-      const updatedData = {
-        name: userData.name,
-        email: userData.email,
-        ngo: userData.ngo,
-        phone: userData.phone,
-        notifications: userData.notifications,
-      };
-      const token = localStorage.getItem('authToken');
-      await axios.put('http://localhost:5000/api/user/profile', updatedData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      alert('Profile updated successfully!');
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Failed to update profile!');
-    }
+  const handleUpdateProfile = () => {
+    alert('User data saved successfully!');
   };
 
-  // Update password
-  const handleUpdatePassword = async () => {
+  const handleUpdatePassword = () => {
     if (newPassword !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
-    try {
-      const token = localStorage.getItem('authToken');
-      await axios.put('http://localhost:5000/api/user/password', { newPassword }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      alert('Password updated successfully!');
-    } catch (error) {
-      console.error('Error updating password:', error);
-      alert('Failed to update password!');
-    }
+    alert('User data saved successfully!');
   };
 
   return (
